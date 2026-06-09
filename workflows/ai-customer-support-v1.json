@@ -386,7 +386,7 @@
     {
       "parameters": {
         "mode": "raw",
-        "jsonOutput": "{\n  \"status\": \"Routed\"\n}\n",
+        "jsonOutput": "{\n  \"status\": \"Routed\"\n}",
         "includeOtherFields": true,
         "options": {}
       },
@@ -838,7 +838,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "ca2c0056-3f7a-40e8-a4f3-80ff68983f73",
+  "versionId": "54db92e9-e27f-4ef3-ace3-c927d9cb1647",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "ad27fdebfac89cbc59aa15b44f306fa2f733bce3261a6a0857177690bff2a898"
