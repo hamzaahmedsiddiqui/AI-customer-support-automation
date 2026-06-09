@@ -493,7 +493,7 @@
       "parameters": {
         "description": "=Customer: {{ $('Edit Fields').item.json.name }}  \nEmail: {{ $('Edit Fields').item.json.email }}  \nCategory: {{ $json.category }} \nPriority: {{ $json.priority }} \nSentiment: {{ $json.sentiment }} \nAssigned Team: {{ $json.assigned_team }} \nEscalated: {{ $json.escalated }} \nSummary: {{ $json.summary }}  \nSuggested Response: {{ $json.draft_reply }}",
         "jsonParameters": true,
-        "additionalFieldsJson": "={\n  \"ticket\": {\n    \"subject\": \"{{ $('Edit Fields').item.json.subject }}\",\n    \"priority\": \"{{ $json.zendeskPriority }}\",\n    \"type\": \"question\",\n    \"comment\": {\n      \"body\": \"Customer: {{ $('Edit Fields').item.json.name }}\\nEmail: {{ $('Edit Fields').item.json.email }}\\nCategory: {{ $json.category }}\\nPriority: {{ $json.priority }}\\nSentiment: {{ $json.sentiment }}\\nAssigned Team: {{ $json.assigned_team }}\\nEscalated: {{ $json.escalated }}\\n\\nSummary:\\n{{ $json.summary }}\\n\\nSuggested Response:\\n{{ $json.draft_reply }}\"\n    }\n  }\n}"
+        "additionalFieldsJson": "={\n  \"ticket\": {\n    \"subject\": \"{{ $('Edit Fields').item.json.subject }}\",\n    \"priority\": \"{{ $json.zendeskPriority }}\",\n    \"type\": \"question\",\n    \"Escalated\": {{ $json.escalated }},\n    \"comment\": {\n      \"body\": \"Customer: {{ $('Edit Fields').item.json.name }}\\nEmail: {{ $('Edit Fields').item.json.email }}\\nCategory: {{ $json.category }}\\nPriority: {{ $json.priority }}\\nSentiment: {{ $json.sentiment }}\\nAssigned Team: {{ $json.assigned_team }}\\nEscalated: {{ $json.escalated }}\\n\\nSummary:\\n{{ $json.summary }}\\n\\nSuggested Response:\\n{{ $json.draft_reply }}\"\n    }\n  }\n}"
       },
       "type": "n8n-nodes-base.zendesk",
       "typeVersion": 1,
@@ -507,6 +507,63 @@
         "zendeskApi": {
           "id": "QhNNjJuVtTb6Ozdu",
           "name": "Zendesk account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0bd8bd1c-2747-4c53-8d27-945c8d731e44",
+              "leftValue": "={{ $('Priority Conversion').item.json.escalated }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3088,
+        -208
+      ],
+      "id": "6488ccfc-a686-43dd-8f80-a34784fe70b4",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "sendTo": "hamza.ios.developer@gmail.com",
+        "subject": "=🚨 High Priority Support Ticket Escalation - #{{ $('Create a ticket').item.json.id }}",
+        "message": "=<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;\">\n\n  <div style=\"background-color: #d32f2f; padding: 16px 20px; border-radius: 6px 6px 0 0;\">\n    <h2 style=\"color: #ffffff; margin: 0; font-size: 18px;\">🚨 High-Priority Support Ticket — Immediate Attention Required</h2>\n  </div>\n\n  <div style=\"background-color: #ffffff; padding: 24px; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 6px 6px;\">\n\n    <table style=\"width: 100%; border-collapse: collapse;\">\n\n      <tr>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; width: 35%; color: #888888; font-size: 13px; font-weight: bold; text-transform: uppercase;\">Ticket ID</td>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #212121; font-size: 14px;\">{{ $('Create a ticket').item.json.id }}</td>\n      </tr>\n\n      <tr>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #888888; font-size: 13px; font-weight: bold; text-transform: uppercase;\">Customer</td>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #212121; font-size: 14px;\">{{ $('Edit Fields').item.json.name }}</td>\n      </tr>\n\n      <tr>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #888888; font-size: 13px; font-weight: bold; text-transform: uppercase;\">Email</td>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #212121; font-size: 14px;\">{{ $('Edit Fields').item.json.email }}</td>\n      </tr>\n\n      <tr>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #888888; font-size: 13px; font-weight: bold; text-transform: uppercase;\">Category</td>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #212121; font-size: 14px;\">{{ $('Priority Conversion').item.json.category }}</td>\n      </tr>\n\n      <tr>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #888888; font-size: 13px; font-weight: bold; text-transform: uppercase;\">Priority</td>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px;\">\n          <span style=\"background-color: #ffebee; color: #c62828; padding: 3px 10px; border-radius: 12px; font-weight: bold; font-size: 13px;\">{{ $('Priority Conversion').item.json.priority }}</span>\n        </td>\n      </tr>\n\n      <tr>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #888888; font-size: 13px; font-weight: bold; text-transform: uppercase;\">Sentiment</td>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #212121; font-size: 14px;\">{{ $('Priority Conversion').item.json.sentiment }}</td>\n      </tr>\n\n      <tr>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #888888; font-size: 13px; font-weight: bold; text-transform: uppercase;\">Assigned Team</td>\n        <td style=\"padding: 10px 0; border-bottom: 1px solid #f0f0f0; color: #212121; font-size: 14px;\">{{ $('Priority Conversion').item.json.assigned_team }}</td>\n      </tr>\n\n    </table>\n\n    <div style=\"margin-top: 24px;\">\n      <p style=\"color: #888888; font-size: 13px; font-weight: bold; text-transform: uppercase; margin: 0 0 8px 0;\">Summary</p>\n      <p style=\"background-color: #f5f5f5; padding: 14px; border-left: 4px solid #d32f2f; border-radius: 4px; color: #212121; font-size: 14px; line-height: 1.6; margin: 0;\">{{ $('Priority Conversion').item.json.summary }}</p>\n    </div>\n\n    <div style=\"margin-top: 20px;\">\n      <p style=\"color: #888888; font-size: 13px; font-weight: bold; text-transform: uppercase; margin: 0 0 8px 0;\">Suggested Response</p>\n      <p style=\"background-color: #e8f5e9; padding: 14px; border-left: 4px solid #2e7d32; border-radius: 4px; color: #212121; font-size: 14px; line-height: 1.6; margin: 0;\">{{ $('Priority Conversion').item.json.draft_reply }}</p>\n    </div>\n\n    <div style=\"margin-top: 28px; padding-top: 16px; border-top: 1px solid #e0e0e0; color: #aaaaaa; font-size: 12px; text-align: center;\">\n      This is an automated alert from your support ticketing system.\n    </div>\n\n  </div>\n\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3296,
+        -304
+      ],
+      "id": "0d572685-e618-4b99-8877-2a341fcca52c",
+      "name": "Send a message",
+      "webhookId": "fc63bc63-3587-4841-9bf5-8b2b2064dcfe",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "pZVTERK5Hv4RX9KW",
+          "name": "Gmail account"
         }
       }
     }
@@ -752,6 +809,28 @@
           }
         ]
       ]
+    },
+    "Create a ticket": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -759,7 +838,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "dcef1217-15a9-4673-bb1a-18b942ced087",
+  "versionId": "ca2c0056-3f7a-40e8-a4f3-80ff68983f73",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "ad27fdebfac89cbc59aa15b44f306fa2f733bce3261a6a0857177690bff2a898"
