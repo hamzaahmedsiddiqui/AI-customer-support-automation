@@ -1,0 +1,154 @@
+{
+  "name": "AI Customer Support Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "analyze-ticket",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -288,
+        -256
+      ],
+      "id": "3896ef84-c4e4-4315-8d4e-025142d1fb19",
+      "name": "Webhook",
+      "webhookId": "47e9fb72-1c3d-464c-a087-ee238256eb19"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1e9534ad-ce5f-4a87-a51d-466d82c33e08",
+              "name": "subject",
+              "value": "={{ $json.body.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "faa7b4a3-0040-4788-8397-e9399ec4e9f6",
+              "name": "message",
+              "value": "={{ $json.body.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        -256
+      ],
+      "id": "224026f1-9297-4cc8-8a52-5997a773efb4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=You are an insurance customer support automation assistant.\n\nAnalyze the support ticket and return ONLY valid JSON.\n\nCategories:\n- Billing\n- Claims\n- Policy Change\n- Technical Issue\n- Account Access\n- General Inquiry\n\nPriority Levels:\n- Low\n- Medium\n- High\n\nReturn exactly this JSON structure:\n\n{\n  \"category\": \"\",\n  \"priority\": \"\",\n  \"sentiment\": \"\",\n  \"summary\": \"\",\n  \"draft_reply\": \"\"\n}\n\nTicket Subject:\n{{ $json.subject }}\n\nTicket Message:\n{{ $json.message }}"
+            },
+            {
+              "content": "=Ticket Subject:\n{{ $json.subject }}\n\nTicket Message:\n{{ $json.message }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        128,
+        -256
+      ],
+      "id": "fb2a2b17-1eba-4795-b3ad-f907e543912e",
+      "name": "Parse AI Response",
+      "credentials": {
+        "openAiApi": {
+          "id": "VjuvxlMCj53sFpIH",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const aiResponse = $json.output[0].content[0].text;\nconst parsed = JSON.parse(aiResponse);\n\nreturn [\n  {\n    json: parsed\n  }\n]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        -256
+      ],
+      "id": "486081b6-06da-40d7-805b-63d105d510b1",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Response": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e957b3d4-259d-49b8-98e6-b335c6ec8383",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad27fdebfac89cbc59aa15b44f306fa2f733bce3261a6a0857177690bff2a898"
+  },
+  "nodeGroups": [],
+  "id": "FJwv7Ae0LpPgxHr7",
+  "tags": []
+}
