@@ -22,14 +22,26 @@
         "assignments": {
           "assignments": [
             {
-              "id": "1e9534ad-ce5f-4a87-a51d-466d82c33e08",
-              "name": "subject",
+              "id": "877c7dd8-09c2-4740-aff8-6b5b08b3a7d9",
+              "name": "=name",
+              "value": "={{ $json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "c6b1968f-6695-4771-852e-d3c87aad7846",
+              "name": "=email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "ae40068e-a28b-46d1-ac05-a007a0291124",
+              "name": "=subject",
               "value": "={{ $json.body.subject }}",
               "type": "string"
             },
             {
-              "id": "faa7b4a3-0040-4788-8397-e9399ec4e9f6",
-              "name": "message",
+              "id": "f62b9af9-dcf0-4395-a43a-6c6910c6724c",
+              "name": "=message",
               "value": "={{ $json.body.message }}",
               "type": "string"
             }
@@ -58,10 +70,10 @@
           "values": [
             {
               "role": "system",
-              "content": "=You are an insurance customer support automation assistant.\n\nAnalyze the support ticket and return ONLY valid JSON.\n\nCategories:\n- Billing\n- Claims\n- Policy Change\n- Technical Issue\n- Account Access\n- General Inquiry\n\nPriority Levels:\n- Low\n- Medium\n- High\n\nReturn exactly this JSON structure:\n\n{\n  \"category\": \"\",\n  \"priority\": \"\",\n  \"sentiment\": \"\",\n  \"summary\": \"\",\n  \"draft_reply\": \"\"\n}\n\nTicket Subject:\n{{ $json.subject }}\n\nTicket Message:\n{{ $json.message }}"
+              "content": "=You are an ABC Insurance customer support automation assistant.\n\nAnalyze the customer support ticket and return ONLY valid JSON.\n\nDo not use markdown.\nDo not wrap the response in ```json.\nDo not include explanations or extra text.\n\nAllowed categories:\n- Billing\n- Claims\n- Policy Change\n- Technical Issue\n- Account Access\n- General Inquiry\n\nAllowed priorities:\n- Low\n- Medium\n- High\n\nAllowed sentiment values:\n- Positive\n- Neutral\n- Negative\n\nReturn exactly this JSON structure with real values:\n\n{\n  \"category\": \"Billing | Claims | Policy Change | Technical Issue | Account Access | General Inquiry\",\n  \"priority\": \"Low | Medium | High\",\n  \"sentiment\": \"Positive | Neutral | Negative\",\n  \"summary\": \"short summary of the customer issue\",\n  \"draft_reply\": \"professional support reply draft\"\n}"
             },
             {
-              "content": "=Ticket Subject:\n{{ $json.subject }}\n\nTicket Message:\n{{ $json.message }}"
+              "content": "=Customer Name:\n{{ $json.name }}\n\nCustomer Email:\n{{ $json.email }}\n\nTicket Subject:\n{{ $json.subject }}\n\nTicket Message:\n{{ $json.message }}"
             }
           ]
         },
@@ -95,6 +107,408 @@
       ],
       "id": "486081b6-06da-40d7-805b-63d105d510b1",
       "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Billing",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a35a920d-80ed-4038-856d-83c878145538"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Billing Queue"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "15319a37-92ef-4b49-8dc5-c5905e2f760a",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Claims",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Claims Queue"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c46ddf5c-2e4d-4022-afc0-c6f0b168b78d",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Policy Change",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Policy Queue"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "90983b05-7e55-4408-8b13-d016b9152af0",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Technical Issue",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Technical Queue"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d6a02134-0c7c-4835-a31a-b17039f9f198",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "Account Access",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Account Queue"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c04ca229-1e0e-4470-8477-730da8d7fdf6",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "General Inquiry",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "General Queue"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        704,
+        -320
+      ],
+      "id": "de09f3f2-9c1f-48eb-a6ff-95386ac4607b",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"assigned_team\": \"Billing Team\"\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1184,
+        -576
+      ],
+      "id": "5f6d9fb1-81d7-448f-b5c1-96a39dfccb9e",
+      "name": "Billing Queue"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"assigned_team\": \"Claims Team\"\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        -416
+      ],
+      "id": "05e040d7-7c2b-4fff-9c2b-14b43816f236",
+      "name": "Claims Queue"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"assigned_team\": \"Policy Management Team\"\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        -240
+      ],
+      "id": "4a1c2914-09f2-4ae4-a7ca-fd3c19a06b6d",
+      "name": "Policy Queue"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"assigned_team\": \"Technical Support Team\"\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        -80
+      ],
+      "id": "3b6cf27b-1f45-476f-a1d9-31c8838a64ce",
+      "name": "Technical Queue"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"assigned_team\": \"Account Support Team\"\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        112
+      ],
+      "id": "d2e18dab-d0e3-41d2-a916-38ab5f8eedc4",
+      "name": "Account Queue"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"assigned_team\": \"Customer Service Team\"\n}",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1200,
+        288
+      ],
+      "id": "67c8cacb-c883-4904-99f8-d22d79d44d38",
+      "name": "General Queue"
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1584,
+        -272
+      ],
+      "id": "2b277c3b-252c-44e7-a2a9-ba7e5224cee8",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"status\": \"Routed\"\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1808,
+        -208
+      ],
+      "id": "9d019d18-f70b-465e-a595-ae264bfb0c6c",
+      "name": "Ticket Processed"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ed8f2eaa-faf5-4ac5-9e3f-6db0227bb1b9",
+              "leftValue": "={{ $json.priority }}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2016,
+        -208
+      ],
+      "id": "09e5489d-d678-48bd-b88a-10d18e261de8",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"escalated\": true\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2224,
+        -304
+      ],
+      "id": "f6493fb0-171c-46ed-9ec2-a6479aa7d148",
+      "name": "Escalated True"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"escalated\": false\n}\n",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2224,
+        -112
+      ],
+      "id": "764b294c-fbb1-4703-9ead-ff7e17cd6b19",
+      "name": "Escalated False"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2448,
+        -208
+      ],
+      "id": "00a05c4d-d636-4c80-a84c-010ae5a71708",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "if ($json.priority === \"Medium\") {\n  $json.zendeskPriority = \"normal\";\n} else {\n  $json.zendeskPriority = $json.priority.toLowerCase();\n}\n\nreturn [{ json: $json }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2656,
+        -208
+      ],
+      "id": "90d3e195-3351-4547-aa84-7b3ccca5587c",
+      "name": "Priority Conversion"
+    },
+    {
+      "parameters": {
+        "description": "=Customer: {{ $('Edit Fields').item.json.name }}  \nEmail: {{ $('Edit Fields').item.json.email }}  \nCategory: {{ $json.category }} \nPriority: {{ $json.priority }} \nSentiment: {{ $json.sentiment }} \nAssigned Team: {{ $json.assigned_team }} \nEscalated: {{ $json.escalated }} \nSummary: {{ $json.summary }}  \nSuggested Response: {{ $json.draft_reply }}",
+        "jsonParameters": true,
+        "additionalFieldsJson": "={\n  \"ticket\": {\n    \"subject\": \"{{ $('Edit Fields').item.json.subject }}\",\n    \"priority\": \"{{ $json.zendeskPriority }}\",\n    \"type\": \"question\",\n    \"comment\": {\n      \"body\": \"Customer: {{ $('Edit Fields').item.json.name }}\\nEmail: {{ $('Edit Fields').item.json.email }}\\nCategory: {{ $json.category }}\\nPriority: {{ $json.priority }}\\nSentiment: {{ $json.sentiment }}\\nAssigned Team: {{ $json.assigned_team }}\\nEscalated: {{ $json.escalated }}\\n\\nSummary:\\n{{ $json.summary }}\\n\\nSuggested Response:\\n{{ $json.draft_reply }}\"\n    }\n  }\n}"
+      },
+      "type": "n8n-nodes-base.zendesk",
+      "typeVersion": 1,
+      "position": [
+        2880,
+        -208
+      ],
+      "id": "67647f10-abd6-41ef-90ca-93ff957eb524",
+      "name": "Create a ticket",
+      "credentials": {
+        "zendeskApi": {
+          "id": "QhNNjJuVtTb6Ozdu",
+          "name": "Zendesk account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -134,7 +548,209 @@
     },
     "Code in JavaScript": {
       "main": [
-        []
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Billing Queue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Claims Queue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Policy Queue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Technical Queue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Account Queue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "General Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Billing Queue": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claims Queue": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Policy Queue": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Technical Queue": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Account Queue": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "General Queue": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Ticket Processed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ticket Processed": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Escalated True",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Escalated False",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalated True": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalated False": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Priority Conversion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Priority Conversion": {
+      "main": [
+        [
+          {
+            "node": "Create a ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -143,7 +759,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "e957b3d4-259d-49b8-98e6-b335c6ec8383",
+  "versionId": "dcef1217-15a9-4673-bb1a-18b942ced087",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "ad27fdebfac89cbc59aa15b44f306fa2f733bce3261a6a0857177690bff2a898"
