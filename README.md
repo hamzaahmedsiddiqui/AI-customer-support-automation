@@ -18,7 +18,7 @@ AI-powered customer support automation platform built using:
 ## Architecture
 
 <p align="center">
-  <img src="images/architecture.png" alt="Architecture Diagram" width="900"/>
+  <img src="Untitled-2025-12-05-1016.excalidraw.png" alt="Architecture Diagram" width="300"/>
 </p>
 
 ### Workflow
