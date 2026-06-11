@@ -5,7 +5,7 @@
 
 ![n8n](https://img.shields.io/badge/n8n-Workflow%20Automation-orange?style=flat-square&logo=n8n)
 ![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-412991?style=flat-square&logo=openai)
-![Zendesk](https://img.shields.io/badge/Zendesk-CRM-03363D?style=flat-square&logo=zendesk)
+![Zendesk](https://img.shields.io/badge/Zendeskk-CRM-03363D?style=flat-square&logo=zendesk)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Analytics-336791?style=flat-square&logo=postgresql)
 ![Metabase](https://img.shields.io/badge/Metabase-Dashboard-509EE3?style=flat-square&logo=metabase)
 ![Docker](https://img.shields.io/badge/Docker-Containerised-2496ED?style=flat-square&logo=docker)
@@ -54,7 +54,7 @@ The platform is structured across eight layers:
    - Draft customer response
 4. **Business logic layer** processes the AI output:
    - Assigns the ticket to the appropriate support team
-   - Converts priority to Zendesk-compatible format
+   - Converts priority to Zendesk compatible format
    - Detects escalation conditions
 5. **Zendesk integration** automatically:
    - Creates a new support ticket
