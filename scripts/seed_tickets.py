@@ -1,6 +1,6 @@
 import psycopg2          # Library to connect Python to PostgreSQL
 import random             # To randomly pick values from lists
-from datetime import datetime, timedelta  # To generate spread-out dates
+from datetime import datetime, timedelta, timezone  # To generate spread-out dates
 
 # ──────────────────────────────────────────────
 # 1. DATABASE CONNECTION
@@ -19,7 +19,7 @@ cursor = conn.cursor()
 
 # ──────────────────────────────────────────────
 # 2. REALISTIC DATA POOLS
-# ────────────────────────────────────────────so──
+# ──────────────────────────────────────────────
 # These lists mirror exactly what your AI returns
 
 categories = [
@@ -95,9 +95,25 @@ for i in range(100):
     escalated = priority == "High"   # This returns True or False
 
     # Spread tickets across the last 30 days so charts show trends over time
-    # random.randint(0, 30) picks a random number between 0 and 30
     days_ago   = random.randint(0, 30)
-    created_at = datetime.now() - timedelta(days=days_ago)
+    created_at = datetime.now(timezone.utc) - timedelta(days=days_ago)
+
+    # 70% of tickets are resolved, 30% are still open
+    # random.random() returns a float between 0.0 and 1.0
+    if random.random() < 0.7:
+        status = "resolved"
+        # Resolved tickets have a resolved_at time after created_at
+        # Resolution time varies by priority (faster for High, slower for Low)
+        if priority == "High":
+            resolve_hours = random.randint(1, 3)
+        elif priority == "Medium":
+            resolve_hours = random.randint(2, 6)
+        else:
+            resolve_hours = random.randint(6, 24)
+        resolved_at = created_at + timedelta(hours=resolve_hours)
+    else:
+        status = "open"
+        resolved_at = None   # None inserts as NULL in PostgreSQL
 
     # Fake Zendesk ticket ID (starts at 1000 + row number)
     zendesk_ticket_id = 1000 + i
@@ -115,8 +131,10 @@ for i in range(100):
             assigned_team,
             escalated,
             summary,
-            created_at
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            created_at,
+            status,
+            resolved_at
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """, (
         zendesk_ticket_id,
         customer_name,
@@ -127,7 +145,9 @@ for i in range(100):
         assigned_team,
         escalated,
         summary,
-        created_at
+        created_at,
+        status,
+        resolved_at
     ))
 
 # ──────────────────────────────────────────────
@@ -137,7 +157,7 @@ for i in range(100):
 # Without this, nothing is actually saved
 conn.commit()
 
-print("✅ 100 tickets inserted successfully.")
+print("✅ 100 tickets inserted successfully with status and resolved_at.")
 
 # Always close your cursor and connection when done
 cursor.close()
