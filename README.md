@@ -17,7 +17,7 @@
 
 ## Overview
 
-This project is a production-grade AI customer support automation platform that replaces manual ticket triage with an intelligent, fully automated pipeline. When a customer submits a support request, the system classifies the issue, detects priority and sentiment, drafts a response, routes the ticket to the correct team, creates a Zendesk ticket with full AI context, triggers escalation alerts via Gmail for high-priority cases, and stores everything in PostgreSQL for analytics and reporting — all without human intervention.
+This project is an AI customer support automation platform that replaces manual ticket triage with an intelligent, fully automated pipeline. When a customer submits a support request, the system classifies the issue, detects priority and sentiment, drafts a response, routes the ticket to the correct team, creates a Zendesk ticket with full AI context, triggers escalation alerts via Gmail for high-priority cases, and stores everything in PostgreSQL for analytics and reporting — all without human intervention.
 
 Built as a portfolio project to demonstrate real-world AI automation engineering using **n8n**, **OpenAI**, **Zendesk**, **PostgreSQL**, and **Gmail**.
 
@@ -52,15 +52,15 @@ The platform is structured across seven layers:
    - Draft customer response
 4. **Business logic layer** processes the AI output:
    - Assigns the ticket to the appropriate support team
-   - Converts priority to Zendesk compatible format
+   - Converts priority to Zendesk-compatible format
    - Detects escalation conditions
 5. **Zendesk integration** automatically:
    - Creates a new support ticket
    - Attaches full AI analysis and metadata
    - Routes the ticket to the correct team queue
 6. **Escalation workflow** — if high priority:
-   - Sends a Gmail notification to the support lead
-   - Flags the ticket as escalated in Zendesk
+   - Sends an email notification to the support lead
+   - Flags the ticket as escalated in the Ticket System (Zendesk)
 7. **PostgreSQL** stores all ticket data for analytics:
    - Ticket ID, customer details, category, priority, sentiment, team, escalation status, timestamp
 8. **Reporting layer** enables operational insights:
@@ -158,12 +158,3 @@ Import the workflow file (`workflow.json`) into n8n and configure the following 
 ├── docker-compose.yml     # n8n Docker setup
 └── README.md
 ```
-
----
-
-## Author
-
-**Hamza Ahmed Siddiqui**
-Software Engineer · AI & Workflow Automation · AWS Cloud
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-hamzaahmedsiddiqui-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/hamzaahmedsiddiqui/)
