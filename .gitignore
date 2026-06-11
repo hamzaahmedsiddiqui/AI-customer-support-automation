@@ -1,4 +1,4 @@
 .env
 .n8n/
 *.log
-.DS_Store
+.DS_Storevenv/
