@@ -1,6 +1,6 @@
 <div align="center">
 
-# AI Customer Support Automation Platform
+#  AI Customer Support Automation Platform
 **End-to-end AI-powered ticket triage, routing, escalation, and analytics**
 
 ![n8n](https://img.shields.io/badge/n8n-Workflow%20Automation-orange?style=flat-square&logo=n8n)
